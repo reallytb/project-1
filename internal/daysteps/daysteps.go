@@ -2,6 +2,7 @@ package daysteps
 
 import (
 	"fmt"
+	"log"
 	"strconv"
 	"strings"
 	"time"
@@ -19,24 +20,34 @@ const (
 func parsePackage(data string) (int, time.Duration, error) {
 	separateData := strings.Split(data, ",")
 	if len(separateData) != 2 {
+		log.Println("Ошибка парсинга")
 		return 0, 0, fmt.Errorf("Ошибка парсинга")
 	}
 	steps, err := strconv.Atoi(separateData[0])
 	if err != nil {
+		log.Println("Ошибка приведения количества шагов в целое число")
 		return 0, 0, fmt.Errorf("Ошибка приведения количества шагов в целое число")
 	}
 	if steps == 0 {
+		log.Println("Количество шагов равно 0")
 		return 0, 0, fmt.Errorf("Количество шагов равно 0")
 	}
 	if steps < 0 {
+		log.Println("Количество шагов отрицательно")
 		return 0, 0, fmt.Errorf("Количество шагов отрицательно")
 	}
 	time, err := time.ParseDuration(separateData[1])
 	if err != nil {
+		log.Println("Ошибка приведения времени")
 		return 0, 0, fmt.Errorf("Ошибка приведения времени")
 	}
 	if time < 0 {
+		log.Println("Время отрицательно")
 		return 0, 0, fmt.Errorf("Время отрицательно")
+	}
+	if time == 0 {
+		log.Println("Время нулевое")
+		return 0, 0, fmt.Errorf("Время нулевое")
 	}
 	return steps, time, nil
 }
